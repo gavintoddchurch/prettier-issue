@@ -1,23 +1,12 @@
 steps:
   - ${{if contains(parameters.buildReason, variables['Build.Reason'])}}:
     - ${{ if eq(parameters.imageName, '') }}:
-      - task: JFrogCliV2@1
-        displayName: Dependency Vulnerability Audit
-        continueOnError: true
+      - task: sometask@1
+        displayName: Task Display Name
         inputs:
-          jfrogPlatformConnection: My Service Connection
-          command: jf audit --exclusions ".git;node_modules;target;venv;test;dist" --fail=true --watches="Security_watch"
+          command: some command
 
     - ${{ else }}:
       - pwsh: |
-          # Bridge the Azure Pipeline and PowerShell contexts
-          $image = $env:imageName
-
-          # ======== Format the image name to be lowercase, as JFrog CLI requires it ========
-          $formattedImage = $image.ToLower()
-          Write-Host "Formatted image name: $formattedImage"
-          Write-Output "##vso[task.setvariable variable=formattedImageName]$formattedImage"
-        displayName: Format Image Name
-        env:
-          # ====== "Pass" parameters to the script, so I can keep the contexts separate, and allow for external testing ======
-          imageName: ${{ parameters.imageName }}
+          write-host example script
+        displayName: example script
